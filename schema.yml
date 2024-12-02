@@ -1,0 +1,722 @@
+openapi: 3.0.3
+info:
+  title: Property Management API
+  version: 0.0.0
+paths:
+  /API/schema/:
+    get:
+      operationId: API_schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - ug
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - API
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /API/token/:
+    post:
+      operationId: API_token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /API/token/refresh/:
+    post:
+      operationId: API_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /propertyAPI/leases/:
+    get:
+      operationId: propertyAPI_leases_list
+      description: List of all properties
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lease'
+          description: ''
+    post:
+      operationId: propertyAPI_leases_create
+      description: List of all properties
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lease'
+          description: ''
+  /propertyAPI/leases/{id}/:
+    get:
+      operationId: propertyAPI_leases_list_2
+      description: List of all properties
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lease'
+          description: ''
+    put:
+      operationId: propertyAPI_leases_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: propertyAPI_leases_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /propertyAPI/properties/:
+    get:
+      operationId: propertyAPI_properties_list
+      description: List of all properties
+      tags:
+      - propertyAPI
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property'
+          description: ''
+    post:
+      operationId: propertyAPI_properties_create
+      description: List of all properties
+      tags:
+      - propertyAPI
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+          description: ''
+  /propertyAPI/properties/{id}/:
+    get:
+      operationId: propertyAPI_properties_list_2
+      description: List of all properties
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property'
+          description: ''
+    put:
+      operationId: propertyAPI_properties_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: propertyAPI_properties_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /propertyAPI/tenants/:
+    get:
+      operationId: propertyAPI_tenants_list
+      description: List of all properties
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tenant'
+          description: ''
+    post:
+      operationId: propertyAPI_tenants_create
+      description: List of all properties
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+          description: ''
+  /propertyAPI/tenants/{id}/:
+    get:
+      operationId: propertyAPI_tenants_list_2
+      description: List of all properties
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tenant'
+          description: ''
+    put:
+      operationId: propertyAPI_tenants_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: propertyAPI_tenants_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /propertyAPI/units/:
+    get:
+      operationId: propertyAPI_units_list
+      description: List of all properties
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Unit'
+          description: ''
+    post:
+      operationId: propertyAPI_units_create
+      description: List of all properties
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unit'
+          description: ''
+  /propertyAPI/units/{id}/:
+    get:
+      operationId: propertyAPI_units_list_2
+      description: List of all properties
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Unit'
+          description: ''
+    put:
+      operationId: propertyAPI_units_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: propertyAPI_units_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - propertyAPI
+      security:
+      - jwtAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Lease:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        tenant:
+          type: integer
+        unit:
+          type: integer
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        rent_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+      required:
+      - end_date
+      - id
+      - rent_amount
+      - start_date
+      - tenant
+      - unit
+    Property:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        address:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        property_type:
+          $ref: '#/components/schemas/PropertyTypeEnum'
+        number_of_units:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+      required:
+      - address
+      - id
+      - name
+      - number_of_units
+      - property_type
+    PropertyTypeEnum:
+      enum:
+      - Apartment
+      - House
+      - Car
+      - Land
+      - Furniture
+      - Commercial
+      type: string
+      description: |-
+        * `Apartment` - Apartment
+        * `House` - House
+        * `Car` - Car
+        * `Land` - Land
+        * `Furniture` - Furniture
+        * `Commercial` - Commercial
+    Tenant:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone_number:
+          type: string
+          maxLength: 15
+      required:
+      - email
+      - id
+      - name
+      - phone_number
+    TokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - password
+      - refresh
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    Unit:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        property:
+          type: integer
+        unit_count:
+          type: string
+          maxLength: 15
+        bedrooms:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        bathrooms:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        rent:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        is_available:
+          type: boolean
+      required:
+      - id
+      - property
+      - rent
+      - unit_count
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
